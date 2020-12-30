@@ -26,6 +26,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private Timer Timer;
     private int delay = 6;
     private int playerX = 310;
+    private int playerXdir = 0;
+    private boolean left = false,right = false;
     private Ball ball = new Ball(350,525,-1,-2,Color.GREEN);
     private int state=0;
     
@@ -172,6 +174,28 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             }
             ball.x += ball.getXdir();
             ball.y += ball.getYdir();
+            if(right == true){
+                playerX += 3;
+                if(!play){
+                    ball.x +=3;
+                }
+            }
+            
+            if(left == true){
+                playerX -= 3;
+                if(!play){
+                    ball.x -=3;
+                }
+            }
+            
+            if (playerX >= 600) {
+                playerX = 600;
+                playerXdir = 0;
+            }else if (playerX <= 10) {
+                playerX = 10;
+                playerXdir = 0;
+            } 
+            
             if (ball.x < 0) {
                 ball.setXdir(- ball.getXdir());
             }
@@ -192,7 +216,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            right = false;
+        }else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            left = false;
+        }
     }
 
     @Override
@@ -201,8 +229,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             if (playerX >= 600) {
                 playerX = 600;
             } else {
-                playerX += 20;
+                right = true;
                 if(!play){
+                    playerX+=20;
                     ball.x += 20;
                 }
             }
@@ -210,8 +239,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             if (playerX <= 10) {
                 playerX = 10;
             } else {
-                playerX -= 20;
+                left = true;
                 if(!play){
+                     playerX-=20;
                     ball.x -= 20;
                 }
             }
