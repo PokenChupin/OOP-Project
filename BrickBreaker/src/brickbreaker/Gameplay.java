@@ -26,7 +26,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private Timer Timer;
     private int delay = 6;
     private int playerX = 310;
-    private int playerXdir = 0;
     private boolean left = false,right = false;
     private Ball ball = new Ball(350,525,-1,-2,Color.GREEN);
     private int state=0;
@@ -83,7 +82,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             g.drawString("    Game Over Score: " + score, 175, 300);
 
             g.setFont(new Font("serif", Font.BOLD, 30));
-            g.drawString("   Press Enter to Restart", 190, 340);
+            g.drawString("   Press ENTER to Restart", 190, 340);
             state=1;
         }
         
@@ -97,12 +96,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         
         if(map.brick.getTotal() == 0){
             ++(this.level);
-            this.points = this.points * this.level;
+            this.points = 5 * this.level;
             col += 2;
             row++;
-            if(this.delay>0){
-              this.delay-=2;
-            }
+            --(this.delay);
             int wew = this.level%8;
             switch (wew) {
                 case 0:
@@ -174,26 +171,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             }
             ball.x += ball.getXdir();
             ball.y += ball.getYdir();
+            
             if(right == true){
-                playerX += 3;
-                if(!play){
-                    ball.x +=3;
-                }
+                playerX += 2;
             }
             
             if(left == true){
-                playerX -= 3;
-                if(!play){
-                    ball.x -=3;
-                }
+                playerX -= 2;
             }
             
-            if (playerX >= 600) {
-                playerX = 600;
-                playerXdir = 0;
+            if (playerX >= 585) {
+                playerX = 585;
             }else if (playerX <= 10) {
                 playerX = 10;
-                playerXdir = 0;
             } 
             
             if (ball.x < 0) {
@@ -226,8 +216,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (playerX >= 600) {
-                playerX = 600;
+            if (playerX >= 585) {
+                playerX = 585;
             } else {
                 right = true;
                 if(!play){
@@ -252,7 +242,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             play = true;
         }
-
+        
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!play) {
                 ball.x = 350;
